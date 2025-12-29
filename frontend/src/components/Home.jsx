@@ -46,6 +46,7 @@ function Home() {
   const loadHistory = async () => {
     try {
       const data = await historyAPI.getHistory();
+      console.log("History data received:", data);
       setHistory(data);
     } catch (err) {
       console.error("Failed to load history", err);
@@ -81,6 +82,12 @@ function Home() {
       setLoading(true);
       const data = await getGeoData(searchIp);
       setCurrentGeo(data);
+      
+      // Save to history
+      await historyAPI.saveHistory(searchIp, data);
+      
+      // Reload history to show new entry
+      await loadHistory();
     } catch (err) {
       setError("Failed to fetch geolocation data");
     } finally {

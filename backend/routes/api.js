@@ -104,10 +104,10 @@ router.get("/history", authenticateToken, async (req, res) => {
 
     const parsedHistory = history.map((item) => ({
       ...item,
-      geodata:
-        typeof item.geodata === "string"
-          ? JSON.parse(item.geodata)
-          : item.geodata,
+      geo_data:
+        typeof item.geo_data === "string"
+          ? JSON.parse(item.geo_data)
+          : item.geo_data,
     }));
 
     res.json(parsedHistory);

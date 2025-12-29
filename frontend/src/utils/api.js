@@ -40,8 +40,11 @@ export const historyAPI = {
         const res = await api.get('/history');
         return res.data;
     },
-    saveHistory: async () => {
-        const res = await api.post('/history');
+    saveHistory: async (ipAddress, geodata) => {
+        const res = await api.post('/history', {
+            ip_address: ipAddress,
+            geodata: geodata
+        });
         return res.data;
     }
 };
