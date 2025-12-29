@@ -7,6 +7,12 @@ const apiRoutes = require("./routes/api.js");
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+// Validate required environment variables
+if (!process.env.JWT_SECRET) {
+  console.error("❌ JWT_SECRET is not set in .env file");
+  process.exit(1);
+}
+
 // MIDDLEWARE
 app.use(cors());
 app.use(express.json());

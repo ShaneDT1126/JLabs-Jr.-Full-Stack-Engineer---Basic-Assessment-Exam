@@ -95,7 +95,7 @@ router.get("/history", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.userId;
 
-    const [history] = pool.query(
+    const [history] = await pool.query(
       `
         SELECT * FROM search_history WHERE user_id = ? ORDER BY created_at DESC
         `,
