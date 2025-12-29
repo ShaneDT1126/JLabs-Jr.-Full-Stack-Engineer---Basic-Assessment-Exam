@@ -1,16 +1,117 @@
-# React + Vite
+# JLabs Exam - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React application for IP geolocation tracking with user authentication.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js (v14 or higher)
+- npm or yarn
+- Backend API running on `http://localhost:8000`
 
-## React Compiler
+## Installation Steps
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. Install Dependencies
 
-## Expanding the ESLint configuration
+```bash
+npm install
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 2. Start Development Server
+
+```bash
+npm run dev
+```
+
+The app will run on `http://localhost:5173` (Vite default port)
+
+
+## Features Implemented
+
+### Core Requirements ✅
+- ✅ Login page with email/password validation
+- ✅ Authentication with JWT tokens
+- ✅ Automatic redirect based on login state
+- ✅ Display user's IP and geolocation on home screen
+- ✅ Search functionality for any IP address
+- ✅ IP address validation
+- ✅ Clear search to revert to user's IP
+- ✅ Display search history list
+
+
+## Project Structure
+
+```
+frontend/
+├── src/
+│   ├── components/
+│   │   ├── Login.jsx        # Login page component
+│   │   ├── Login.css        # Login page styles
+│   │   ├── Home.jsx         # Home page component
+│   │   └── Home.css         # Home page styles
+│   ├── context/
+│   │   └── AuthContext.jsx  # Authentication context (global state)
+│   ├── utils/
+│   │   └── api.js           # API functions and axios config
+│   ├── App.jsx              # Main app with routing
+│   ├── App.css              # Global app styles
+│   ├── main.jsx             # App entry point
+│   └── index.css            # Base CSS
+├── package.json
+└── vite.config.js
+```
+
+## How It Works
+
+### Authentication Flow
+
+1. User opens app → checks localStorage for token
+2. If token exists → redirect to Home
+3. If no token → show Login page
+4. Login successful → save token & user to localStorage
+5. All API requests include token in Authorization header
+
+### API Integration
+
+All API calls go through `src/utils/api.js`:
+- **axios interceptor** automatically adds JWT token to requests
+- **authAPI.login()** - authenticates user
+- **historyAPI.getHistory()** - fetches search history
+- **historyAPI.saveHistory()** - saves new search
+- **historyAPI.deleteHistory()** - deletes multiple items
+- **getGeoData()** - fetches geolocation from ipinfo.io
+
+### Context API
+
+`AuthContext.jsx` provides global authentication state:
+- Stores user and token
+- Provides login/logout functions
+- Persists auth state to localStorage
+- Used by all components via `useAuth()` hook
+
+### Protected Routes
+
+- **PublicRoute**: Redirects authenticated users to Home
+- **ProtectedRoute**: Redirects unauthenticated users to Login
+
+## Technologies Used
+
+- **React 18** - UI framework
+- **Vite** - Build tool (faster than create-react-app)
+- **React Router DOM** - Client-side routing
+- **Axios** - HTTP client for API requests
+- **Context API** - Global state management
+- **Plain CSS** - Custom styling
+
+## Test Credentials
+
+- **Email**: test@jlabs.com
+- **Password**: password123
+
+## API Endpoints Used
+
+- `POST /api/login` - User authentication
+- `GET /api/history` - Get search history
+- `POST /api/history` - Save search
+- `DELETE /api/history` - Delete history items
+- `GET https://ipinfo.io/geo` - Get user's IP/location
+- `GET https://ipinfo.io/{ip}/geo` - Get specific IP location
