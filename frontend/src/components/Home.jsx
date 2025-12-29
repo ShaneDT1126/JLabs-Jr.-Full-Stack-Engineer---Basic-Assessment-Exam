@@ -161,7 +161,7 @@ function Home() {
               {loading ? "Searching..." : "Search"}
             </button>
             <button type="button" onClick={handleClear} disabled={loading}>
-              Clear
+              Clear History
             </button>
           </form>
           {error && <div className="error-msg">{error}</div>}
